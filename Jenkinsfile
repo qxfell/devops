@@ -4,7 +4,7 @@ node('xianfei-jnlp') {
         checkout scm
         script {
             build_tag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
-            if (env.BRANCH_NAME != 'master') {
+            if (env.BRANCH_NAME != 'main') {
                 build_tag = "${env.BRANCH_NAME}-${build_tag}"
             }
         }
@@ -25,7 +25,7 @@ node('xianfei-jnlp') {
     }
     stage('Deploy') {
         echo "5. Deploy Stage"
-        if (env.BRANCH_NAME == 'master') {
+        if (env.BRANCH_NAME == 'main') {
             input "确认要部署线上环境吗？asdasdasdasdasdasd"
         }
         sh "sed -i 's/<BUILD_TAG>/${build_tag}/' k8s.yaml"
